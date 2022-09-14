@@ -1,7 +1,5 @@
 /*Algoritmo básico de QuickSort*/
-/*Pablo Gutiérrez Martínez
-Victor Jorge Sibaja
- */
+
 import java.util.Arrays;
 
 public class QuicksortBase {
