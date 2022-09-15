@@ -99,16 +99,17 @@ public class QuicksortBase {
 
         vector1 = generarVector(15);
         vector2 = generarVector(15);
-        System.out.println(Arrays.toString(vector1));
+        System.out.println("V1:" + Arrays.toString(vector1));
         quicksort(vector1, 0, vector1.length - 1);
 
-        System.out.println(Arrays.toString(vector2));
+        System.out.println("V2:" + Arrays.toString(vector2));
         insercionDirecta(vector2);
 
 
         // imprime la array ordenada
-        System.out.println(Arrays.toString(vector1));
-        System.out.println(Arrays.toString(vector2));
+        System.out.println("V1:" + Arrays.toString(vector1));
+        System.out.println("V2:" + Arrays.toString(vector2));
+
     }
 
 }
