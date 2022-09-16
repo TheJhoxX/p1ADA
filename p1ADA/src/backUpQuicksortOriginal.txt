@@ -1,6 +1,4 @@
-/*Algoritmo modificado de QuickSort
-* Pablo Gutiérrez Martínez
-* Víctor Jorge Sibaja*/
+/*Algoritmo básico de QuickSort*/
 
 import java.util.Arrays;
 
@@ -15,8 +13,6 @@ public class QuicksortModificado {
     // Partición usando el esquema de partición de Lomuto
     public static int partition(int[] a, int start, int end)
     {
-        System.out.println("START" +  start);
-        System.out.println("END:" + end);
         // Elija el elemento más a la derecha como un pivote de la array
         int pivot = a[end];
 
@@ -47,21 +43,19 @@ public class QuicksortModificado {
     // Rutina de clasificación rápida
 
     /*k corresponde al valor a partir del cual se aplica el algoritmo de ordenación rápida*/
-    public static void quicksortModificado(int[] a, int start, int end, int k)
+    public static void quicksortOriginal(int[] a, int start, int end, int k)
     {
-        System.out.println(Arrays.toString(a));
         // condición base
-        if (a.length <= k) {
+        if (a.length >= k) {
             insercionDirecta(a);
             return;
         }
 
-        System.out.println("fallo:" + end);
         // reorganizar los elementos a través del pivote
         int pivot = partition(a, start, end);
 
         // recurre en un subarray que contiene elementos menores que el pivote
-        quicksortModificado(a, start, pivot - 1, k);
+        quicksortModificado(a, start, pivot - 1,k);
 
         // se repite en el subarray que contiene más elementos que el pivote
         quicksortModificado(a, pivot + 1, end, k);
