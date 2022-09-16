@@ -2,7 +2,7 @@
 
 import java.util.Arrays;
 
-public class QuicksortBase {
+public class QuicksortModificado {
     public static void swap (int[] arr, int i, int j)
     {
         int temp = arr[i];
@@ -41,10 +41,13 @@ public class QuicksortBase {
     }
 
     // Rutina de clasificación rápida
-    public static void quicksort(int[] a, int start, int end)
+
+    /*k corresponde al valor a partir del cual se aplica el algoritmo de ordenación rápida*/
+    public static void quicksortModificado(int[] a, int start, int end, int k)
     {
         // condición base
-        if (start >= end) {
+        if (a.length >= k) {
+            insercionDirecta(a);
             return;
         }
 
@@ -52,24 +55,24 @@ public class QuicksortBase {
         int pivot = partition(a, start, end);
 
         // recurre en un subarray que contiene elementos menores que el pivote
-        quicksort(a, start, pivot - 1);
+        quicksortModificado(a, start, pivot - 1,k);
 
         // se repite en el subarray que contiene más elementos que el pivote
-        quicksort(a, pivot + 1, end);
+        quicksortModificado(a, pivot + 1, end, k);
     }
 
-    public static void insercionDirecta(int A[]){
+    public static void insercionDirecta(int a[]){
         int p, j;
         int aux;
-        for (p = 1; p < A.length; p++){ // desde el segundo elemento hasta
-            aux = A[p];           // el final, guardamos el elemento y
+        for (p = 1; p < a.length; p++){ // desde el segundo elemento hasta
+            aux = a[p];           // el final, guardamos el elemento y
             j = p - 1;            // empezamos a comprobar con el anterior
-            while ((j >= 0) && (aux < A[j])){ // mientras queden posiciones y el
+            while ((j >= 0) && (aux < a[j])){ // mientras queden posiciones y el
                 // valor de aux sea menor que los
-                A[j + 1] = A[j];   // de la izquierda, se desplaza a
+                a[j + 1] = a[j];   // de la izquierda, se desplaza a
                 j--;               // la derecha
             }
-            A[j + 1] = aux;       // colocamos aux en su sitio
+            a[j + 1] = aux;       // colocamos aux en su sitio
         }
     }
     public static int[] generarVector(int m){
@@ -95,20 +98,13 @@ public class QuicksortBase {
     public static void main(String []args)
     {
         int[] vector1;
-        int[] vector2;
 
-        vector1 = generarVector(15);
-        vector2 = generarVector(15);
+        vector1 = generarVector(100);
         System.out.println("V1:" + Arrays.toString(vector1));
-        quicksort(vector1, 0, vector1.length - 1);
-
-        System.out.println("V2:" + Arrays.toString(vector2));
-        insercionDirecta(vector2);
-
-
-        // imprime la array ordenada
+        quicksortModificado(vector1, 0, vector1.length - 1, 4);
         System.out.println("V1:" + Arrays.toString(vector1));
-        System.out.println("V2:" + Arrays.toString(vector2));
+
+
 
     }
 
