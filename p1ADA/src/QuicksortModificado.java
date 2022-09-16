@@ -1,6 +1,6 @@
 /*Algoritmo modificado de QuickSort
-* Pablo Gutiérrez Martínez
-* Víctor Jorge Sibaja*/
+ * Pablo Gutiérrez Martínez
+ * Víctor Jorge Sibaja*/
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -38,16 +38,18 @@ public class QuicksortModificado {
             }
 
             izquierda.add(pivote);
-            System.out.println("I:" + izquierda.toString());
-            System.out.println("D:" + derecha.toString());
+
 
             quicksortBase(izquierda);
             quicksortBase(derecha);
 
-            for (int i = 0; i < vector.size(); i++) {
+            System.out.println("I:" + izquierda.toString());
+            System.out.println("D:" + derecha.toString());
+            for (int i = 0; i < derecha.size(); i++) {
                 izquierda.add(derecha.get(i));
             }
 
+            System.out.println("Sale con: " + izquierda.toString());
             return izquierda;
         }
 
