@@ -2,91 +2,67 @@
 * Pablo Gutiérrez Martínez
 * Víctor Jorge Sibaja*/
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class QuicksortModificado {
-    public static void swap (int[] arr, int i, int j)
+    public static void swap (ArrayList<Integer> arr, int i, int j)
     {
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+        int temp = arr.get(i);
+        arr.set(i, arr.get(j));
+        arr.set(j, temp);
     }
 
-    // Partición usando el esquema de partición de Lomuto
-    public static int partition(int[] a, int start, int end)
+
+    public static ArrayList<Integer> quicksortBase(ArrayList<Integer> vector)
     {
-        System.out.println("START" +  start);
-        System.out.println("END:" + end);
-        // Elija el elemento más a la derecha como un pivote de la array
-        int pivot = a[end];
+        System.out.println("VECTOR QUE ENTRA:" + vector.toString());
+        if(vector.size() <= 1){
+            return vector;
+        }
 
-        // los elementos menores que el pivote serán empujados a la izquierda de `pIndex`
-        // elementos más que el pivote serán empujados a la derecha de `pIndex`
-        // elementos iguales pueden ir en cualquier dirección
-        int pIndex = start;
+        else {
+            int pivote = vector.get(0);
+            System.out.println("PIVOTE:" + pivote);
+            ArrayList<Integer> izquierda = new ArrayList<>();
+            ArrayList<Integer> derecha = new ArrayList<>();
 
-        // cada vez que encontramos un elemento menor o igual que el pivote,
-        // `pIndex` se incrementa, y ese elemento se colocaría
-        // antes del pivote.
-        for (int i = start; i < end; i++)
-        {
-            if (a[i] <= pivot)
-            {
-                swap(a, i, pIndex);
-                pIndex++;
+            for (int i = 0; i < vector.size(); i++) {
+                if (vector.get(i) < pivote) {
+                    izquierda.add(vector.get(i));
+                }
+                if (vector.get(i) > pivote) {
+                    derecha.add(vector.get(i));
+                }
             }
-        }
 
-        // intercambiar `pIndex` con pivote
-        swap(a, end, pIndex);
+            izquierda.add(pivote);
+            System.out.println("I:" + izquierda.toString());
+            System.out.println("D:" + derecha.toString());
 
-        // devuelve `pIndex` (índice del elemento pivote)
-        return pIndex;
-    }
+            quicksortBase(izquierda);
+            quicksortBase(derecha);
 
-    // Rutina de clasificación rápida
-
-    /*k corresponde al valor a partir del cual se aplica el algoritmo de ordenación rápida*/
-    public static void quicksortModificado(int[] a, int start, int end, int k)
-    {
-        System.out.println(Arrays.toString(a));
-        // condición base
-        if (a.length <= k) {
-            insercionDirecta(a);
-            return;
-        }
-
-        System.out.println("fallo:" + end);
-        // reorganizar los elementos a través del pivote
-        int pivot = partition(a, start, end);
-
-        // recurre en un subarray que contiene elementos menores que el pivote
-        quicksortModificado(a, start, pivot - 1, k);
-
-        // se repite en el subarray que contiene más elementos que el pivote
-        quicksortModificado(a, pivot + 1, end, k);
-    }
-
-    public static void insercionDirecta(int a[]){
-        int p, j;
-        int aux;
-        for (p = 1; p < a.length; p++){ // desde el segundo elemento hasta
-            aux = a[p];           // el final, guardamos el elemento y
-            j = p - 1;            // empezamos a comprobar con el anterior
-            while ((j >= 0) && (aux < a[j])){ // mientras queden posiciones y el
-                // valor de aux sea menor que los
-                a[j + 1] = a[j];   // de la izquierda, se desplaza a
-                j--;               // la derecha
+            for (int i = 0; i < vector.size(); i++) {
+                izquierda.add(derecha.get(i));
             }
-            a[j + 1] = aux;       // colocamos aux en su sitio
-        }
-    }
-    public static int[] generarVector(int m){
 
-        int[] vector = new int[m];
+            return izquierda;
+        }
+
+    }
+
+
+
+
+
+    public static ArrayList<Integer> generarVector(int m){
+
+        ArrayList<Integer> vector = new ArrayList<>(m);
 
         for (int i = 0; i<m; i++){
-            vector[i] = i+1;
+            vector.add(i+1);
         }
 
         int x,y;
@@ -103,12 +79,12 @@ public class QuicksortModificado {
     // Implementación en Java del algoritmo Quicksort
     public static void main(String []args)
     {
-        int[] vector1;
+        ArrayList<Integer> vector1;
 
-        vector1 = generarVector(100);
-        System.out.println("V1:" + Arrays.toString(vector1));
-        quicksortModificado(vector1, 0, vector1.length - 1, 4);
-        System.out.println("V1:" + Arrays.toString(vector1));
+        vector1 = generarVector(10);
+        System.out.println("V1:" + vector1.toString());
+        quicksortBase(vector1);
+        System.out.println("V1:" + vector1.toString());
 
 
 
