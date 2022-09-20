@@ -62,12 +62,13 @@ public class QuicksortModificado {
 
     public static void quicksortModificado(ArrayList<Integer> a, int izq, int der, int k) {
 
+        System.out.println("I:" + izq + " D:" + der);
         //En caso de que el subarray que se pasa como parámetro a la llamada sea de longitud <= 3
         if ((der - izq + 1) <= k)
         {
             System.out.println("ENTRA A INSERCIÓN DIRECTA");
-            insercionDirecta();
-            
+            insercionDirectaConExtremos(a, izq, der);
+
 
         }
         //Si el subarray que se inspecciona es de longitud > k
@@ -92,9 +93,9 @@ public class QuicksortModificado {
             a.set(j, pivote);      // los menores a su izquierda y los mayores a su derecha
 
             if (izq < j - 1)
-                quicksort(a, izq, j - 1);          // ordenamos subarray izquierdo
+                quicksortModificado(a, izq, j - 1, k);          // ordenamos subarray izquierdo
             if (j + 1 < der)
-                quicksort(a, j + 1, der);          // ordenamos subarray derecho
+                quicksortModificado(a, j + 1, der, k);          // ordenamos subarray derecho
 
         }
 
@@ -124,29 +125,33 @@ public class QuicksortModificado {
         return vector;
     }
 
-    public static void insercionDirecta(ArrayList<Integer> a){
+    public static void insercionDirectaConExtremos(ArrayList<Integer> a, int izq, int der){
         int p, j;
         int aux;
-        for (p = 1; p < a.size(); p++){ // desde el segundo elemento hasta
+        for (p = izq + 1; p <= der; p++){ // desde el segundo elemento hasta
             aux = a.get(p);           // el final, guardamos el elemento y
             j = p - 1;            // empezamos a comprobar con el anterior
-            while ((j >= 0) && (aux < a[j])){ // mientras queden posiciones y el
+            while ((j >= 0) && (aux < a.get(j))){ // mientras queden posiciones y el
                 // valor de aux sea menor que los
                 a.set(j+1, j);   // de la izquierda, se desplaza a
                 j--;               // la derecha
             }
             a.set(j+1, aux);       // colocamos aux en su sitio
         }
+        System.out.println("Sale de inserción directa");
     }
     public static void main(String []args)
     {
-        ArrayList<Integer> vector1;
+        ArrayList<Integer> vector1, vector2;
 
         vector1 = generarVector(10);
+        vector2 = generarVector(10);
         System.out.println("V1:" + vector1.toString());
-        quicksort(vector1,0,vector1.size()-1);
+        quicksortModificado(vector1,0,vector1.size()-1, 3);
         System.out.println("V1:" + vector1.toString());
-
+        System.out.println("V2:" + vector2.toString());
+        insercionDirectaConExtremos(vector2, 2, 7);
+        System.out.println("V2:" + vector2.toString());
 
 
     }
