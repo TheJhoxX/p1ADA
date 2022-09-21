@@ -66,7 +66,7 @@ public class QuicksortModificado {
         //En caso de que el subarray que se pasa como parámetro a la llamada sea de longitud <= 3
         if ((der - izq + 1) <= k)
         {
-            //System.out.println("ENTRA A INSERCIÓN DIRECTA");
+            System.out.println("ENTRA A INSERCIÓN DIRECTA");
             insercionDirectaConExtremos(a, izq, der);
 
 
@@ -131,9 +131,9 @@ public class QuicksortModificado {
         for (p = izq + 1; p <= der; p++){ // desde el segundo elemento hasta
             aux = a.get(p);           // el final, guardamos el elemento y
             j = p - 1;            // empezamos a comprobar con el anterior
-            while ((j >= 0) && (aux < a.get(j))){ // mientras queden posiciones y el
+            while ((j >= izq) && (aux < a.get(j))){ // mientras queden posiciones y el
                 // valor de aux sea menor que los
-                a.set(j+1, j);   // de la izquierda, se desplaza a
+                a.set(j+1, a.get(j));   // de la izquierda, se desplaza a
                 j--;               // la derecha
             }
             a.set(j+1, aux);       // colocamos aux en su sitio
@@ -143,7 +143,7 @@ public class QuicksortModificado {
 
     public static void probarValores(){
 
-        for(int i=3; i<=30;i++){
+        for(int i=1; i<=30;i++){
             ArrayList<Integer> vector;
             vector=generarVector(100000);
 
@@ -162,18 +162,18 @@ public class QuicksortModificado {
     public static void main(String []args)
     {
         ArrayList<Integer> vector1, vector2;
-        probarValores();
+        //probarValores();
 
-        /*vector1 = generarVector(10);
+        vector1 = generarVector(10);
         vector2 = generarVector(10);
         System.out.println("V1:" + vector1.toString());
         quicksortModificado(vector1,0,vector1.size()-1, 3);
         System.out.println("V1:" + vector1.toString());
         System.out.println("V2:" + vector2.toString());
-        insercionDirectaConExtremos(vector2, 2, 7);
+        insercionDirectaConExtremos(vector2, 2, 6);
         System.out.println("V2:" + vector2.toString());
 
-*/
+
     }
 
 }
