@@ -74,7 +74,9 @@ public class QuicksortModificado {
         //Si el subarray que se inspecciona es de longitud > k
         else
         {
-            int pivote = a.get(izq); // tomamos primer elemento como pivote
+            int pospivote = elegirPivote(a,izq,der); // tomamos la mediana como pivote
+            int pivote = a.get(pospivote);
+            System.out.println("PIVOTE: "  + pivote);
             int i = izq;         // i realiza la búsqueda de izquierda a derecha
             int j = der;         // j realiza la búsqueda de derecha a izquierda
             int aux;
@@ -102,9 +104,39 @@ public class QuicksortModificado {
 
     }
 
+    public static int elegirPivote(ArrayList<Integer> a, int izq, int der){
+
+        System.out.println(a.toString());
+        int primero,ultimo,mitad;
+
+        primero = a.get(izq);
+        ultimo = a.get(der);
+
+        //En caso de longitud impar
+        if (a.size() % 2 != 0) {
+            mitad = (int) Math.ceil(a.size() / 2);
+            mitad = a.get(mitad);
+        }
+        //En caso de longitud par
+        else{
+            mitad = (a.size()/2) - 1;
+            mitad = a.get(mitad);
+        }
+
+        ArrayList<Integer> pivotes = new ArrayList<>();
+        pivotes.add(primero);
+        pivotes.add(mitad);
+        pivotes.add(ultimo);
+        System.out.println("PIVOTES DESORDENADO: " + pivotes.toString());
+        insercionDirectaConExtremos(pivotes, 0, pivotes.size()-1);
+        System.out.println("PIVOTES ORDENADO: " + pivotes.toString());
+
+        //El elemento central de los 3
+        return pivotes.get(1);
 
 
 
+    }
 
     public static ArrayList<Integer> generarVector(int m){
 
