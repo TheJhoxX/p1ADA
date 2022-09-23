@@ -66,7 +66,6 @@ public class QuicksortModificado {
         //En caso de que el subarray que se pasa como parámetro a la llamada sea de longitud <= 3
         if ((der - izq + 1) <= k)
         {
-            System.out.println("ENTRA A INSERCIÓN DIRECTA");
             insercionDirectaConExtremos(a, izq, der);
 
 
@@ -74,16 +73,16 @@ public class QuicksortModificado {
         //Si el subarray que se inspecciona es de longitud > k
         else
         {
-            int pospivote = elegirPivote(a,izq,der); // tomamos la mediana como pivote
-            int pivote = a.get(pospivote);
-            System.out.println("PIVOTE: "  + pivote);
+            int pivote = elegirPivote(a,izq,der); //Devuelve la posición del pivote
+            int pospivote = pivote; //Backup de la posición del pivote
+            System.out.println(pospivote);
             int i = izq;         // i realiza la búsqueda de izquierda a derecha
             int j = der;         // j realiza la búsqueda de derecha a izquierda
             int aux;
 
             while (i < j) {                          // mientras no se crucen las búsquedas
-                while (a.get(i) <= pivote && i < j) i++; // busca elemento mayor que pivote
-                while (a.get(j) > pivote) j--;           // busca elemento menor que pivote
+                while (a.get(i) <= a.get(pivote) && i < j) i++; // busca elemento mayor que pivote
+                while (a.get(j) > a.get(pivote)) j--;           // busca elemento menor que pivote
                 if (i < j) {                        // si no se han cruzado
                     aux = a.get(i);                      // los intercambia
                     a.set(i, a.get(j));
@@ -91,8 +90,18 @@ public class QuicksortModificado {
                 }
             }
 
-            a.set(izq, a.get(j));      // se coloca el pivote en su lugar de forma que tendremos
-            a.set(j, pivote);      // los menores a su izquierda y los mayores a su derecha
+            System.out.println(a.toString());
+            System.out.println("POS PIVOTE: "  + pospivote + " VALOR DE PIVOTE: " + a.get(pospivote));
+            System.out.println("J:" + j + " VALOR: " + a.get(j));
+            System.out.println("IZQ: " + izq + " VALOR: " + a.get(izq));
+
+
+            a.set(pospivote, a.get(j));      // se coloca el pivote en su lugar de forma que tendremos
+            a.set(j, a.get(pospivote));      // los menores a su izquierda y los mayores a su derecha
+
+
+            System.out.println(a.toString());
+
 
             if (izq < j - 1)
                 quicksortModificado(a, izq, j - 1, k);          // ordenamos subarray izquierdo
@@ -106,8 +115,7 @@ public class QuicksortModificado {
 
     public static int elegirPivote(ArrayList<Integer> a, int izq, int der){
 
-        System.out.println(a.toString());
-        int primero,ultimo,mitad;
+        int primero,ultimo,mitad, valorMitad;
 
         primero = a.get(izq);
         ultimo = a.get(der);
@@ -115,26 +123,31 @@ public class QuicksortModificado {
         //En caso de longitud impar
         if (a.size() % 2 != 0) {
             mitad = (int) Math.ceil(a.size() / 2);
-            mitad = a.get(mitad);
+            valorMitad = a.get(mitad);
         }
         //En caso de longitud par
         else{
             mitad = (a.size()/2) - 1;
-            mitad = a.get(mitad);
+            valorMitad = a.get(mitad);
         }
 
         ArrayList<Integer> pivotes = new ArrayList<>();
         pivotes.add(primero);
-        pivotes.add(mitad);
+        pivotes.add(valorMitad);
         pivotes.add(ultimo);
-        System.out.println("PIVOTES DESORDENADO: " + pivotes.toString());
         insercionDirectaConExtremos(pivotes, 0, pivotes.size()-1);
-        System.out.println("PIVOTES ORDENADO: " + pivotes.toString());
 
-        //El elemento central de los 3
-        return pivotes.get(1);
-
-
+        //Se retorna la posición de la mediana de los 3 elementos
+        if (pivotes.get(1) == primero){
+            return izq;
+        }
+        else if (pivotes.get(1) == ultimo){
+            return der;
+        }
+        else {
+            System.out.println("Devuelve la mitad: " + mitad);
+            return mitad;
+        }
 
     }
 
@@ -197,13 +210,10 @@ public class QuicksortModificado {
         //probarValores();
 
         vector1 = generarVector(10);
-        vector2 = generarVector(10);
         System.out.println("V1:" + vector1.toString());
         quicksortModificado(vector1,0,vector1.size()-1, 3);
         System.out.println("V1:" + vector1.toString());
-        System.out.println("V2:" + vector2.toString());
-        insercionDirectaConExtremos(vector2, 2, 6);
-        System.out.println("V2:" + vector2.toString());
+
 
 
     }
