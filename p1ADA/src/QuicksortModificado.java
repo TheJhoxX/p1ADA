@@ -116,35 +116,21 @@ public class QuicksortModificado {
         primero = a.get(izq);
         ultimo = a.get(der);
 
-        //En caso de longitud impar
-        if ((der - izq + 1) % 2 != 0) {
-            mitad = (int) Math.ceil(a.size() / 2);
-            valorMitad = a.get(mitad);
-        }
-        //En caso de longitud par
-        else{
-            mitad = (a.size()/2) - 1;
-            valorMitad = a.get(mitad);
-        }
+        mitad = (izq+der)/2;
+        valorMitad = a.get(mitad);
+        System.out.println(mitad +  " " + valorMitad);
+        System.out.println(a.toString());
 
         ArrayList<Integer> pivotes = new ArrayList<>();
         pivotes.add(primero);
         pivotes.add(valorMitad);
         pivotes.add(ultimo);
-        insercionDirectaConExtremos(pivotes, 0, pivotes.size()-1);
+        insercionDirectaConExtremos(pivotes, 0, 2);
         System.out.println("PIVOTES: " + pivotes.toString());
 
-        //Se retorna la posición de la mediana de los 3 elementos
-        if (pivotes.get(1) == primero){
-            return izq;
-        }
-        else if (pivotes.get(1) == ultimo){
-            return der;
-        }
-        else {
-            System.out.println("Devuelve la mitad: " + mitad);
-            return mitad;
-        }
+
+        return a.get(pivotes.get(1));
+
 
     }
 
@@ -206,7 +192,7 @@ public class QuicksortModificado {
         ArrayList<Integer> vector1, vector2;
         //probarValores();
 
-        vector1 = generarVector(10);
+        vector1 = generarVector(21);
         quicksortModificado(vector1,0,vector1.size()-1, 3);
         System.out.println("V1:" + vector1.toString());
 
