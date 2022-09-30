@@ -8,50 +8,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class QuicksortModificado {
-    public static void swap (ArrayList<Integer> arr, int i, int j)
+    public static void swap (int[] arr, int i, int j)
     {
-        int temp = arr.get(i);
-        arr.set(i, arr.get(j));
-        arr.set(j, temp);
-    }
-
-    public static ArrayList<Integer> concat(ArrayList<Integer> lizquierda, ArrayList<Integer> lderecha){
-        if ((lizquierda.size() == 0) && (lderecha.size() == 0)){
-            return new ArrayList<>();
-        }
-        //En caso de que no estén vacías las dos listas
-        else{
-           for (int i = 0; i<lderecha.size(); i++){
-               lizquierda.add(lderecha.get(i));
-           }
-        }
-
-        //System.out.println("SALE CONCATENADO: " + lizquierda.toString());
-        return lizquierda;
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 
     /*
     Algoritmo de Quicksort base que funciona
      */
-    public static void quicksort(ArrayList<Integer> a, int izq, int der) {
+    public static void quicksort(int[] a, int izq, int der) {
 
-        int pivote=a.get(izq); // tomamos primer elemento como pivote
+        int pivote=a[izq]; // tomamos primer elemento como pivote
         int i=izq;         // i realiza la búsqueda de izquierda a derecha
         int j=der;         // j realiza la búsqueda de derecha a izquierda
         int aux;
 
         while(i < j){                          // mientras no se crucen las búsquedas
-            while(a.get(i) <= pivote && i < j) i++; // busca elemento mayor que pivote
-            while(a.get(j) > pivote) j--;           // busca elemento menor que pivote
+            while(a[i] <= pivote && i < j) i++; // busca elemento mayor que pivote
+            while(a[j] > pivote) j--;           // busca elemento menor que pivote
             if (i < j) {                        // si no se han cruzado
-                aux= a.get(i);                      // los intercambia
-                a.set(i, a.get(j));
-                a.set(j,aux);
+                aux= a[j];                      // los intercambia
+                a[i] = a[j];
+                a[j] = aux;
             }
         }
 
-        a.set(izq, a.get(j));      // se coloca el pivote en su lugar de forma que tendremos
-        a.set(j, pivote);      // los menores a su izquierda y los mayores a su derecha
+        a[izq] = a[j];      // se coloca el pivote en su lugar de forma que tendremos
+        a[j] = pivote;      // los menores a su izquierda y los mayores a su derecha
 
         if(izq < j-1)
             quicksort(a,izq,j-1);          // ordenamos subarray izquierdo
@@ -60,7 +45,7 @@ public class QuicksortModificado {
 
     }
 
-    public static void quicksortModificado(ArrayList<Integer> a, int izq, int der, int k) {
+    public static void quicksortModificado(int[] a, int izq, int der, int k) {
 
         //En caso de que el subarray que se pasa como parámetro a la llamada sea de longitud <= 3
         if ((der - izq + 1) <= k)
@@ -76,24 +61,24 @@ public class QuicksortModificado {
             int aux;
 
             while (i < j) {                          // mientras no se crucen las búsquedas
-                while (a.get(i) <= a.get(pospivote) && i < j) i++; // busca elemento mayor que pivote
-                while (a.get(j) > a.get(pospivote)) j--;           // busca elemento menor que pivote
+                while (a[i] <= a[pospivote] && i < j) i++; // busca elemento mayor que pivote
+                while (a[j] > a[pospivote]) j--;           // busca elemento menor que pivote
                 if (i < j) {                        // si no se han cruzado
                     if (j == pospivote){
                         pospivote = i;
                     }
-                    aux = a.get(i);                      // los intercambia
-                    a.set(i, a.get(j));
-                    a.set(j, aux);
+                    aux = a[i];                      // los intercambia
+                    a[i] = a[j];
+                    a[j] = aux;
                 }
             }
 
 
 
 
-            int valorPivote = a.get(pospivote);
-            a.set(pospivote, a.get(j));      // se coloca el pivote en su lugar de forma que tendremos
-            a.set(j, valorPivote);      // los menores a su izquierda y los mayores a su derecha
+            int valorPivote = a[pospivote];
+            a[pospivote] = a[j];      // se coloca el pivote en su lugar de forma que tendremos
+            a[j] = valorPivote;      // los menores a su izquierda y los mayores a su derecha
 
 
             if (izq < j - 1)
@@ -106,24 +91,24 @@ public class QuicksortModificado {
 
     }
 
-    public static int elegirPivote(ArrayList<Integer> a, int izq, int der){
+    public static int elegirPivote(int[] a, int izq, int der){
 
         int primero,ultimo,mitad, valorMitad, mediana;
 
 
-        primero = a.get(izq);
-        ultimo = a.get(der);
+        primero = a[izq];
+        ultimo = a[der];
 
         mitad = (izq+der)/2;
-        valorMitad = a.get(mitad);
+        valorMitad = a[mitad];
 
-        ArrayList<Integer> pivotes = new ArrayList<>();
-        pivotes.add(primero);
-        pivotes.add(valorMitad);
-        pivotes.add(ultimo);
+        int[] pivotes = new int[3];
+        pivotes[0] = primero;
+        pivotes[1] = valorMitad;
+        pivotes[2] = ultimo;
         insercionDirectaConExtremos(pivotes, 0, 2);
 
-        mediana = pivotes.get(1);
+        mediana = pivotes[1];
         if (mediana == primero){
             mediana = izq;
         }
@@ -137,12 +122,12 @@ public class QuicksortModificado {
         return mediana;
     }
 
-    public static ArrayList<Integer> generarVector(int m){
+    public static int[] generarVector(int m){
 
-        ArrayList<Integer> vector = new ArrayList<>(m);
+        int[] vector = new int[m];
 
         for (int i = 0; i<m; i++){
-            vector.add(i+1);
+            vector[i] = i+1;
         }
 
         int x,y;
@@ -156,49 +141,32 @@ public class QuicksortModificado {
         return vector;
     }
 
-    public static void insercionDirectaConExtremos(ArrayList<Integer> a, int izq, int der){
+    public static void insercionDirectaConExtremos(int[] a, int izq, int der){
         int p, j;
         int aux;
         for (p = izq + 1; p <= der; p++){ // desde el segundo elemento hasta
-            aux = a.get(p);           // el final, guardamos el elemento y
+            aux = a[p];           // el final, guardamos el elemento y
             j = p - 1;            // empezamos a comprobar con el anterior
-            while ((j >= izq) && (aux < a.get(j))){ // mientras queden posiciones y el
+            while ((j >= izq) && (aux < a[j])){ // mientras queden posiciones y el
                 // valor de aux sea menor que los
-                a.set(j+1, a.get(j));   // de la izquierda, se desplaza a
+                a[j+1] = a[j];   // de la izquierda, se desplaza a
                 j--;               // la derecha
             }
-            a.set(j+1, aux);       // colocamos aux en su sitio
+            a[j+1] = aux;       // colocamos aux en su sitio
         }
         //System.out.println("Sale de inserción directa");
     }
 
-    public static void probarValores(){
 
-        for(int i=1; i<=30;i++){
-            ArrayList<Integer> vector;
-            vector=generarVector(100000);
-
-            double inicio=System.currentTimeMillis();
-            quicksortModificado(vector,0,vector.size()-1, i);
-            double fin = System.currentTimeMillis();
-
-            double tiempo = (double) ((fin - inicio));
-            System.out.println("K" + i +": " + tiempo +" milisegundos");
-        }
-
-
-
-
-    }
     public static void main(String []args)
     {
-        ArrayList<Integer> vector1, vector2;
+        int[] vector1, vector2;
         //probarValores();
 
-        vector1 = generarVector(21);
-        System.out.println("V1:" + vector1.toString());
-        quicksortModificado(vector1,0,vector1.size()-1, 3);
-        System.out.println("V1:" + vector1.toString());
+        vector1 = generarVector(20);
+        System.out.println("V1:" + Arrays.toString(vector1));
+        quicksortModificado(vector1,0,vector1.length - 1, 3);
+        System.out.println("V1:" + Arrays.toString(vector1));
 
 
 
