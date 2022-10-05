@@ -212,8 +212,23 @@ public class QuicksortModificado {
         try {
             fichero = new FileWriter("datos.csv");
             pw = new PrintWriter(fichero);
-            pw.println(Arrays.toString(listaAsignaciones));
-            pw.println(Arrays.toString(listaComparaciones));
+            String str1,str2;
+            str1 = Arrays.toString(listaAsignaciones);
+            str2 = Arrays.toString(listaComparaciones);
+
+            //Dar formato a lo que se escribirá en el fichero del que sacaremos los datos para obtener el valor de k
+            str1 = str1.replaceAll(",",";");
+            str1 = str1.replaceAll(" ","");
+            str1 = str1.replace("[","");
+            str1 = str1.replace("]","");
+
+            str2 = str2.replaceAll(",",";");
+            str2 = str2.replaceAll(" ","");
+            str2 = str2.replace("[","");
+            str2 = str2.replace("]","");
+
+            pw.println(str1);
+            pw.println(str2);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
