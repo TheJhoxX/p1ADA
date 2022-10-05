@@ -6,8 +6,11 @@ import javax.sound.midi.SysexMessage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class QuicksortModificado {
+    static int comparaciones;
+    static int asignaciones;
     public static void swap (int[] arr, int i, int j)
     {
         int temp = arr[i];
@@ -48,6 +51,7 @@ public class QuicksortModificado {
     public static void quicksortModificado(int[] a, int izq, int der, int k) {
 
         //En caso de que el subarray que se pasa como parámetro a la llamada sea de longitud <= 3
+
         if ((der - izq + 1) <= k)
         {
             insercionDirectaConExtremos(a, izq, der);
@@ -63,12 +67,16 @@ public class QuicksortModificado {
             while (i < j) {                          // mientras no se crucen las búsquedas
                 while (a[i] <= a[pospivote] && i < j) i++; // busca elemento mayor que pivote
                 while (a[j] > a[pospivote]) j--;           // busca elemento menor que pivote
+                comparaciones++;
                 if (i < j) {                        // si no se han cruzado
                     if (j == pospivote){
+
                         pospivote = i;
                     }
                     aux = a[i];                      // los intercambia
+                    asignaciones++;
                     a[i] = a[j];
+                    asignaciones++;
                     a[j] = aux;
                 }
             }
@@ -77,15 +85,19 @@ public class QuicksortModificado {
 
 
             int valorPivote = a[pospivote];
+            asignaciones++;
             a[pospivote] = a[j];      // se coloca el pivote en su lugar de forma que tendremos
+            asignaciones++;
             a[j] = valorPivote;      // los menores a su izquierda y los mayores a su derecha
 
-
-            if (izq < j - 1)
-                quicksortModificado(a, izq, j - 1, k);          // ordenamos subarray izquierdo
-            if (j + 1 < der)
+            comparaciones++;
+            if (izq < j - 1) {
+                quicksortModificado(a, izq, j - 1, k);     // ordenamos subarray izquierdo
+            }
+            comparaciones++;
+            if (j + 1 < der) {
                 quicksortModificado(a, j + 1, der, k);          // ordenamos subarray derecho
-
+            }
         }
 
 
@@ -109,9 +121,12 @@ public class QuicksortModificado {
         insercionDirectaConExtremos(pivotes, 0, 2);
 
         mediana = pivotes[1];
+
+
         if (mediana == primero){
             mediana = izq;
         }
+
         if (mediana == valorMitad){
             mediana = mitad;
         }
@@ -149,13 +164,54 @@ public class QuicksortModificado {
             j = p - 1;            // empezamos a comprobar con el anterior
             while ((j >= izq) && (aux < a[j])){ // mientras queden posiciones y el
                 // valor de aux sea menor que los
+                comparaciones++;
+                asignaciones++;
                 a[j+1] = a[j];   // de la izquierda, se desplaza a
                 j--;               // la derecha
             }
+            asignaciones++;
             a[j+1] = aux;       // colocamos aux en su sitio
         }
         //System.out.println("Sale de inserción directa");
     }
+
+    public static void probarValores(int[] a){
+        ArrayList<Integer> listaComparaciones = new ArrayList<>();
+        ArrayList<Integer> listaAsignaciones = new ArrayList<>();
+        int min;
+        for(int i=3;i<=33;i++){
+            quicksortModificado(a,0,a.length - 1, i);
+            System.out.println("Comparaciones("+ i + "): "+ comparaciones);
+            System.out.println("Asignaciones("+ i + "): "+ asignaciones);
+            listaAsignaciones.add(asignaciones);
+            listaComparaciones.add(comparaciones);
+            comparaciones=0;
+            asignaciones=0;
+        }
+
+        min=listaAsignaciones.get(0);
+        for (int i = 1; i < listaAsignaciones.size(); i++) {
+            if (listaAsignaciones.get(i) <= min) {
+                min = listaAsignaciones.get(i);
+            }
+        }
+        System.out.println("Minimo valor k y asignaciones: " + listaAsignaciones.indexOf(min)+3);
+
+        min=listaComparaciones.get(0);
+
+        for (int i = 1; i < listaComparaciones.size(); i++) {
+            if (listaComparaciones.get(i) <= min) {
+                min = listaComparaciones.get(i);
+            }
+        }
+
+        System.out.println("Minimo valor k y comparaciones: " + listaComparaciones.indexOf(min)+3);
+
+        System.out.println(listaComparaciones.toString());
+        System.out.println(listaAsignaciones.toString());
+    }
+
+
 
 
     public static void main(String []args)
@@ -163,10 +219,12 @@ public class QuicksortModificado {
         int[] vector1, vector2;
         //probarValores();
 
-        vector1 = generarVector(20);
-        System.out.println("V1:" + Arrays.toString(vector1));
-        quicksortModificado(vector1,0,vector1.length - 1, 3);
-        System.out.println("V1:" + Arrays.toString(vector1));
+        vector1 = generarVector(1000000);
+
+        probarValores(vector1);
+
+        //quicksortModificado(vector1,0,vector1.length - 1, 3);
+
 
 
 
