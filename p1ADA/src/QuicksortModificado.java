@@ -2,11 +2,8 @@
  * Pablo Gutiérrez Martínez
  * Víctor Jorge Sibaja*/
 
-import javax.sound.midi.SysexMessage;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.Arrays;
-import java.util.List;
 
 public class QuicksortModificado {
     static int comparaciones;
@@ -182,22 +179,58 @@ public class QuicksortModificado {
     }
 
     public static void probarValores(){
-        ArrayList<Integer> listaComparaciones = new ArrayList<>();
-        ArrayList<Integer> listaAsignaciones = new ArrayList<>();
+        int[] listaComparaciones = new int[28];
+        int[] listaAsignaciones = new int[28];
         int[] a;
-        int min;
+
         for(int i=3;i<=30;i++){
-            a=generarVector(100000);
-            quicksortModificado(a,0,a.length - 1, i);
-            listaAsignaciones.add(asignaciones);
-            listaComparaciones.add(comparaciones);
-            comparaciones=0;
-            asignaciones=0;
+
+            listaAsignaciones[i-3] = 0;
+            listaComparaciones[i-3] = 0;
+
+            for (int j = 0; j<=20; j++){
+                //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
+                a=generarVector(10000);
+                comparaciones=0;
+                asignaciones=0;
+
+                quicksortModificado(a,0,a.length - 1, i);
+                listaAsignaciones[i-3] = listaAsignaciones[i-3] + asignaciones;
+                listaComparaciones[i-3] = listaAsignaciones[i-3] + comparaciones;
+            }
+
+            //Se hace un promedio de las 20 ejecuciones de cada k
+            listaAsignaciones[i-3] = listaAsignaciones[i-3]/20;
+            listaComparaciones[i-3] = listaComparaciones[i-3]/20;
+
+
         }
 
+        FileWriter fichero = null;
+        PrintWriter pw = null;
 
-        System.out.println(listaComparaciones.toString());
-        System.out.println(listaAsignaciones.toString());
+        try {
+            fichero = new FileWriter("datos.csv");
+            pw = new PrintWriter(fichero);
+            pw.println(Arrays.toString(listaAsignaciones));
+            pw.println(Arrays.toString(listaComparaciones));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            try{
+                if (fichero!=null){
+                    fichero.close();
+                }
+            }
+            catch (Exception e2){
+                e2.printStackTrace();
+            }
+        }
+
+        System.out.println(Arrays.toString(listaComparaciones));
+        System.out.println(Arrays.toString(listaAsignaciones));
     }
 
 
@@ -205,16 +238,9 @@ public class QuicksortModificado {
 
     public static void main(String []args)
     {
-        int[] vector1, vector2;
-        //probarValores();
 
-        vector1 = generarVector(100000);
 
         probarValores();
-
-        //quicksortModificado(vector1,0,vector1.length - 1, 3);
-
-
 
 
     }
