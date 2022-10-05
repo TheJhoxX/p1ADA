@@ -181,37 +181,20 @@ public class QuicksortModificado {
         //System.out.println("Sale de inserción directa");
     }
 
-    public static void probarValores(int[] a){
+    public static void probarValores(){
         ArrayList<Integer> listaComparaciones = new ArrayList<>();
         ArrayList<Integer> listaAsignaciones = new ArrayList<>();
+        int[] a;
         int min;
-        for(int i=3;i<=33;i++){
+        for(int i=3;i<=30;i++){
+            a=generarVector(100000);
             quicksortModificado(a,0,a.length - 1, i);
-            System.out.println("Comparaciones("+ i + "): "+ comparaciones);
-            System.out.println("Asignaciones("+ i + "): "+ asignaciones);
             listaAsignaciones.add(asignaciones);
             listaComparaciones.add(comparaciones);
             comparaciones=0;
             asignaciones=0;
         }
 
-        min=listaAsignaciones.get(0);
-        for (int i = 1; i < listaAsignaciones.size(); i++) {
-            if (listaAsignaciones.get(i) <= min) {
-                min = listaAsignaciones.get(i);
-            }
-        }
-        System.out.println("Minimo valor k y asignaciones: " + listaAsignaciones.indexOf(min)+3);
-
-        min=listaComparaciones.get(0);
-
-        for (int i = 1; i < listaComparaciones.size(); i++) {
-            if (listaComparaciones.get(i) <= min) {
-                min = listaComparaciones.get(i);
-            }
-        }
-
-        System.out.println("Minimo valor k y comparaciones: " + listaComparaciones.indexOf(min)+3);
 
         System.out.println(listaComparaciones.toString());
         System.out.println(listaAsignaciones.toString());
@@ -225,9 +208,9 @@ public class QuicksortModificado {
         int[] vector1, vector2;
         //probarValores();
 
-        vector1 = generarVector(1000000);
+        vector1 = generarVector(100000);
 
-        probarValores(vector1);
+        probarValores();
 
         //quicksortModificado(vector1,0,vector1.length - 1, 3);
 
