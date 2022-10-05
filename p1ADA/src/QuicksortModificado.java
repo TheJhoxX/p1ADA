@@ -65,14 +65,20 @@ public class QuicksortModificado {
             int aux;
 
             while (i < j) {                          // mientras no se crucen las búsquedas
-                while (a[i] <= a[pospivote] && i < j) i++; // busca elemento mayor que pivote
-                while (a[j] > a[pospivote]) j--;           // busca elemento menor que pivote
-                comparaciones++;
+                while (a[i] <= a[pospivote] && i < j){
+                    i++;
+                    comparaciones++;                                 // busca elemento mayor que pivote
+                }
+                while (a[j] > a[pospivote]){
+                    j--;
+                    comparaciones++;                                 // busca elemento menor que pivote
+                }
                 if (i < j) {                        // si no se han cruzado
                     if (j == pospivote){
 
                         pospivote = i;
                     }
+                    asignaciones++;
                     aux = a[i];                      // los intercambia
                     asignaciones++;
                     a[i] = a[j];
@@ -83,18 +89,18 @@ public class QuicksortModificado {
 
 
 
-
+            asignaciones++;
             int valorPivote = a[pospivote];
             asignaciones++;
             a[pospivote] = a[j];      // se coloca el pivote en su lugar de forma que tendremos
             asignaciones++;
             a[j] = valorPivote;      // los menores a su izquierda y los mayores a su derecha
 
-            comparaciones++;
+
             if (izq < j - 1) {
                 quicksortModificado(a, izq, j - 1, k);     // ordenamos subarray izquierdo
             }
-            comparaciones++;
+
             if (j + 1 < der) {
                 quicksortModificado(a, j + 1, der, k);          // ordenamos subarray derecho
             }
@@ -163,7 +169,7 @@ public class QuicksortModificado {
             aux = a[p];           // el final, guardamos el elemento y
             j = p - 1;            // empezamos a comprobar con el anterior
             while ((j >= izq) && (aux < a[j])){ // mientras queden posiciones y el
-                // valor de aux sea menor que los
+                                                // valor de aux sea menor que los
                 comparaciones++;
                 asignaciones++;
                 a[j+1] = a[j];   // de la izquierda, se desplaza a
