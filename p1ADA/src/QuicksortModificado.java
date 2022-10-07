@@ -114,16 +114,19 @@ public class QuicksortModificado {
 
         //extremoIzquierdo <= elementoCentral <= extremoDerecho o extremoDerecho <= elementoCentral <= extremoIzquierdo
         if ((a[izq] <= a[mitad]) && (a[mitad] <= a[der]) || (a[der] <= a[mitad]) && (a[mitad] <= a[izq])){
+            comparaciones = comparaciones + 4;
             pivote = mitad;
         }
 
         //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
         if ((a[mitad] <= a[der]) && (a[der] <= a[izq]) || (a[izq] <= a[der]) && (a[der] <= a[mitad])){
+            comparaciones = comparaciones + 4;
             pivote = der;
         }
 
         //extremoDerecho <= extremoIzquierdo <= elementoCentral o elementoMitad <= extremoIzquierdo <= extremoDerecho
         if ((a[der] <= a[izq]) && (a[izq] <= a[mitad]) || (a[mitad] <= a[izq]) && (a[izq] <= a[der])){
+            comparaciones = comparaciones + 4;
             pivote = izq;
         }
 
