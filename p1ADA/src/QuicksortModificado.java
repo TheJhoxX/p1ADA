@@ -2,8 +2,9 @@
  * Pablo Gutiérrez Martínez
  * Víctor Jorge Sibaja*/
 
-import java.io.*;
-import java.util.Arrays;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class QuicksortModificado {
     static int comparaciones;
@@ -200,28 +201,18 @@ public class QuicksortModificado {
         }
 
         FileWriter fichero = null;
-        PrintWriter pw = null;
+        PrintWriter pw;
 
         try {
             fichero = new FileWriter("datos.csv");
             pw = new PrintWriter(fichero);
-            String str1, str2;
-            str1 = Arrays.toString(listaAsignaciones);
-            str2 = Arrays.toString(listaComparaciones);
 
-            //Dar formato a lo que se escribirá en el fichero del que sacaremos los datos para obtener el valor de k
-            str1 = str1.replaceAll(",", ";");
-            str1 = str1.replaceAll(" ", "");
-            str1 = str1.replace("[", "");
-            str1 = str1.replace("]", "");
+            pw.println("Comparaciones;Asignaciones");
 
-            str2 = str2.replaceAll(",", ";");
-            str2 = str2.replaceAll(" ", "");
-            str2 = str2.replace("[", "");
-            str2 = str2.replace("]", "");
-
-            pw.println(str1);
-            pw.println(str2);
+            //Imprime los valores de las asignaciones y las comparaciones
+            for (int i=0;i<28;i++){
+                pw.println(listaComparaciones[i]+";"+ listaAsignaciones[i]);
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
