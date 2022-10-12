@@ -5,12 +5,13 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Duration;
+import java.time.Instant;
 
 
-public class QuicksortModificado {
+public class QuicksortModificado2 {
     static int comparaciones;
     static int asignaciones;
-
     public static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
@@ -194,31 +195,33 @@ public class QuicksortModificado {
     }
 
     public static void probarValores() {
-        int[] listaComparaciones = new int[28];
-        int[] listaAsignaciones = new int[28];
+        int[] listaComparaciones = new int[10];
+        int[] listaAsignaciones = new int[10];
+        int[] listaTiempos = new int[10];
         int[] a;
 
-        for (int i = 3; i <= 30; i++) {
-            listaAsignaciones[i - 3] = 0;
-            listaComparaciones[i - 3] = 0;
+        for (int i = 1; i <= 10; i++) {
 
             for (int j = 0; j <= 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
-                a = generarVector(100000);
+                a = generarVector(i*10000);
 
+                Instant start = Instant.now();
+                quicksortModificado(a, 0, a.length - 1, 5);
+                Instant finish = Instant.now();
+                long timeElapsed = Duration.between(start,finish).toNanos();
 
-                quicksortModificado(a, 0, a.length - 1, i);
-                listaAsignaciones[i - 3] = listaAsignaciones[i - 3] + asignaciones;
-                listaComparaciones[i - 3] = listaAsignaciones[i - 3] + comparaciones;
-
+                listaAsignaciones[i-1] = listaAsignaciones[i-1] + asignaciones;
+                listaComparaciones[i-1] = listaAsignaciones[i-1] + comparaciones;
+                listaTiempos[i-1] = (int) (listaTiempos[i-1] + timeElapsed);
                 comparaciones = 0;
                 asignaciones = 0;
             }
 
             //Se hace un promedio de las 20 ejecuciones de cada k
-            listaAsignaciones[i - 3] = listaAsignaciones[i - 3] / 20;
-            listaComparaciones[i - 3] = listaComparaciones[i - 3] / 20;
-
+            listaAsignaciones[i -1] = listaAsignaciones[i-1] / 20;
+            listaComparaciones[i -1] = listaComparaciones[i-1] / 20;
+            listaTiempos[i -1] = listaTiempos[i-1] / 20;
 
         }
 
@@ -226,14 +229,14 @@ public class QuicksortModificado {
         PrintWriter pw;
 
         try {
-            fichero = new FileWriter("datos.csv");
+            fichero = new FileWriter("datos2.csv");
             pw = new PrintWriter(fichero);
 
-            pw.println("Valor K;Comparaciones;Asignaciones");
+            pw.println("Tamaño;Comparaciones;Asignaciones;Tiempos");
 
             //Imprime los valores de las asignaciones y las comparaciones
-            for (int i=0;i<28;i++){
-                pw.println(i+3+";"+listaComparaciones[i]+";"+ listaAsignaciones[i]);
+            for (int i=0;i<10;i++){
+                pw.println((i+1)*10000+";"+listaComparaciones[i]+";"+ listaAsignaciones[i]+";"+listaTiempos[i]);
             }
 
         } catch (IOException e) {
