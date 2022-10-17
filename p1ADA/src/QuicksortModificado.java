@@ -5,6 +5,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 
 public class QuicksortModificado {
@@ -204,7 +205,7 @@ public class QuicksortModificado {
 
             for (int j = 0; j <= 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
-                a = generarVector(100000);
+                a = generarVectorCasiOrdenado(100000);
 
 
                 quicksortModificado(a, 0, a.length - 1, i);
