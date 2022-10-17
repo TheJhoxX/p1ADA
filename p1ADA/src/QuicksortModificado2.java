@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 
 public class QuicksortModificado2 {
@@ -165,11 +166,15 @@ public class QuicksortModificado2 {
 
         int x, y;
 
+        System.out.println(Arrays.toString(vector));
+
         for (int i = 0; i < m/10; i++) {
             x = (int) (Math.random() * ((m - 1) + 1));
             y = (int) (Math.random() * ((m - 1) + 1));
             swap(vector, x, y);
         }
+
+        
 
         return vector;
     }
@@ -205,6 +210,7 @@ public class QuicksortModificado2 {
             for (int j = 0; j <= 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
                 a = generarVector(i*10000);
+
 
                 Instant start = Instant.now();
                 quicksortModificado(a, 0, a.length - 1, 5);
@@ -257,7 +263,7 @@ public class QuicksortModificado2 {
     public static void main(String[] args) {
 
         probarValores();
-
+        
     }
 
 }
