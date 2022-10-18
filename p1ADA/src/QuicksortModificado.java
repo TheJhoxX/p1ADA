@@ -115,24 +115,43 @@ public class QuicksortModificado {
 
         mitad = (izq + der) / 2;
 
-        //extremoIzquierdo <= elementoCentral <= extremoDerecho o extremoDerecho <= elementoCentral <= extremoIzquierdo
-        if ((a[izq] <= a[mitad]) && (a[mitad] <= a[der]) || (a[der] <= a[mitad]) && (a[mitad] <= a[izq])){
-            comparaciones = comparaciones + 4;
-            pivote = mitad;
+        comparaciones ++;
+        if (a[izq] <= a[mitad]){
+            comparaciones ++;
+            if (a[mitad] <= a[der]){
+                pivote = mitad;
+                return pivote;
+            }
         }
 
+        comparaciones ++;
+        if (a[der] <= a[mitad]){
+            comparaciones ++;
+           if (a[mitad] <= a[izq]) {
+               pivote = mitad;
+               return pivote;
+           }
+        }
+
+        comparaciones++;
         //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
-        if ((a[mitad] <= a[der]) && (a[der] <= a[izq]) || (a[izq] <= a[der]) && (a[der] <= a[mitad])){
-            comparaciones = comparaciones + 4;
-            pivote = der;
+        if ((a[mitad] <= a[der]) && (a[der] <= a[izq])){
+            comparaciones++;
+            if (a[der] <= a[izq]){
+                pivote = der;
+                return pivote;
+            }
         }
 
-        //extremoDerecho <= extremoIzquierdo <= elementoCentral o elementoMitad <= extremoIzquierdo <= extremoDerecho
-        if ((a[der] <= a[izq]) && (a[izq] <= a[mitad]) || (a[mitad] <= a[izq]) && (a[izq] <= a[der])){
-            comparaciones = comparaciones + 4;
-            pivote = izq;
+        if (a[izq] <= a[der]){
+            if (a[der] <= a[mitad]){
+                pivote = der;
+                return pivote;
+            }
         }
 
+        //En cualquier otro caso el pivote será el elemento izquierdo
+        pivote = izq;
         return pivote;
     }
 
@@ -181,12 +200,16 @@ public class QuicksortModificado {
         for (p = izq + 1; p <= der; p++) { // desde el segundo elemento hasta
             aux = a[p];           // el final, guardamos el elemento y
             j = p - 1;            // empezamos a comprobar con el anterior
+            comparaciones ++;
             while ((j >= izq) && (aux < a[j])) { // mientras queden posiciones y el
                 // valor de aux sea menor que los
                 comparaciones++;
                 asignaciones++;
                 a[j + 1] = a[j];   // de la izquierda, se desplaza a
                 j--;               // la derecha
+            }
+            if (!(j>=izq)){
+                comparaciones--;
             }
             asignaciones++;
             a[j + 1] = aux;       // colocamos aux en su sitio
@@ -205,7 +228,7 @@ public class QuicksortModificado {
 
             for (int j = 0; j <= 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
-                a = generarVectorCasiOrdenado(100000);
+                a = generarVector(10000);
 
 
                 quicksortModificado(a, 0, a.length - 1, i);

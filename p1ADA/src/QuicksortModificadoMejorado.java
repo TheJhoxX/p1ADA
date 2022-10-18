@@ -5,6 +5,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 
 public class QuicksortModificadoMejorado {
@@ -62,12 +63,10 @@ public class QuicksortModificadoMejorado {
             int aux;
 
             while (i < j) {                          // mientras no se crucen las búsquedas
-                comparaciones++;
                 while (a[i] <= a[pospivote] && i < j) {
                     i++;
                     comparaciones++;                                 // busca elemento mayor que pivote
                 }
-                comparaciones++;
                 while (a[j] > a[pospivote]) {
                     j--;
                     comparaciones++;                                 // busca elemento menor que pivote
@@ -116,31 +115,44 @@ public class QuicksortModificadoMejorado {
 
         mitad = (izq + der) / 2;
 
-        //Si el de la mitad es mayor que el de la izquierda la mediana será mitad o derecha
-        comparaciones++;
-        if(a[mitad] >= a[izq]){
-            comparaciones++;
-            if (a[mitad]<=a[der]){
-                return mitad;
-            }
-            else{
-                return der;
+        comparaciones ++;
+        if (a[izq] <= a[mitad]){
+            comparaciones ++;
+            if (a[mitad] <= a[der]){
+                pivote = mitad;
+                return pivote;
             }
         }
-        //Si el de la dereha es mayor que el de la  izquierda la mediana tamién será mitad o derecha
-        comparaciones++;
-        if (a[der]>=a[izq]){
-            comparaciones++;
-            if (a[mitad]<=a[der]){
-                return mitad;
-            }
-            else{
-                return der;
-            }
-        }
-        //Cualquier otro caso la mediana será el de la izquierda
-        return izq;
 
+        comparaciones ++;
+        if (a[der] <= a[mitad]){
+            comparaciones ++;
+            if (a[mitad] <= a[izq]) {
+                pivote = mitad;
+                return pivote;
+            }
+        }
+
+        comparaciones++;
+        //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
+        if ((a[mitad] <= a[der]) && (a[der] <= a[izq])){
+            comparaciones++;
+            if (a[der] <= a[izq]){
+                pivote = der;
+                return pivote;
+            }
+        }
+
+        if (a[izq] <= a[der]){
+            if (a[der] <= a[mitad]){
+                pivote = der;
+                return pivote;
+            }
+        }
+
+        //En cualquier otro caso el pivote será el elemento izquierdo
+        pivote = izq;
+        return pivote;
     }
 
     public static int[] generarVector(int m) {
