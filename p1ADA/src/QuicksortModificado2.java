@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 
 
 public class QuicksortModificado2 {
@@ -185,7 +184,6 @@ public class QuicksortModificado2 {
 
         int x, y;
 
-        System.out.println(Arrays.toString(vector));
 
         for (int i = 0; i < m/10; i++) {
             x = (int) (Math.random() * ((m - 1) + 1));
@@ -234,7 +232,7 @@ public class QuicksortModificado2 {
 
             for (int j = 0; j < 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
-                a = generarVector(i*10000);
+                a = generarVectorCasiOrdenado(i*10000);
 
 
                 Instant start = Instant.now();
@@ -259,17 +257,16 @@ public class QuicksortModificado2 {
         int[] listaComparacionesQO = new int[10];
         int[] listaAsignacionesQO = new int[10];
         long[] listaTiemposQO = new long[10];
-        int[] b;
         tiempo=0;
 
         for (int i = 1; i <= 10; i++) {
 
             for (int j = 0; j < 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
-                a = generarVector(i*10000);
+                a = generarVectorCasiOrdenado(i*10000);
 
                 Instant start = Instant.now();
-                quicksortModificado(a, 0, a.length - 1, 11);
+                quicksort(a, 0, a.length - 1);
                 Instant finish = Instant.now();
                 long timeElapsed = Duration.between(start,finish).toNanos();
                 tiempo=tiempo+timeElapsed;
