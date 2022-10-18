@@ -5,7 +5,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 
 public class QuicksortModificadoMejorado {
@@ -21,32 +20,6 @@ public class QuicksortModificadoMejorado {
     /*
     Algoritmo de Quicksort base que funciona
      */
-    public static void quicksort(int[] a, int izq, int der) {
-
-        int pivote = a[izq]; // tomamos primer elemento como pivote
-        int i = izq;         // i realiza la búsqueda de izquierda a derecha
-        int j = der;         // j realiza la búsqueda de derecha a izquierda
-        int aux;
-
-        while (i < j) {                          // mientras no se crucen las búsquedas
-            while (a[i] <= pivote && i < j) i++; // busca elemento mayor que pivote
-            while (a[j] > pivote) j--;           // busca elemento menor que pivote
-            if (i < j) {                        // si no se han cruzado
-                aux = a[j];                      // los intercambia
-                a[i] = a[j];
-                a[j] = aux;
-            }
-        }
-
-        a[izq] = a[j];      // se coloca el pivote en su lugar de forma que tendremos
-        a[j] = pivote;      // los menores a su izquierda y los mayores a su derecha
-
-        if (izq < j - 1)
-            quicksort(a, izq, j - 1);          // ordenamos subarray izquierdo
-        if (j + 1 < der)
-            quicksort(a, j + 1, der);          // ordenamos subarray derecho
-
-    }
 
     public static void quicksortModificado(int[] a, int izq, int der, int k) {
 
@@ -111,10 +84,7 @@ public class QuicksortModificadoMejorado {
 
     public static int elegirPivote(int[] a, int izq, int der) {
 
-        int mitad, pivote;
-
-        //Inicializo el pivote como el extremo izquierdo
-        pivote = izq;
+        int mitad;
 
         mitad = (izq + der) / 2;
 
@@ -122,40 +92,28 @@ public class QuicksortModificadoMejorado {
         if (a[izq] <= a[mitad]){
             comparaciones ++;
             if (a[mitad] <= a[der]){
-                pivote = mitad;
-                return pivote;
-            }
-        }
-
-        comparaciones ++;
-        if (a[der] <= a[mitad]){
-            comparaciones ++;
-            if (a[mitad] <= a[izq]) {
-                pivote = mitad;
-                return pivote;
+                return mitad;
             }
         }
 
         comparaciones++;
         //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
-        if ((a[mitad] <= a[der]) && (a[der] <= a[izq])){
+        if (a[mitad] <= a[der]){
             comparaciones++;
             if (a[der] <= a[izq]){
-                pivote = der;
-                return pivote;
+                return der;
             }
         }
-
+        comparaciones++;
         if (a[izq] <= a[der]){
+            comparaciones++;
             if (a[der] <= a[mitad]){
-                pivote = der;
-                return pivote;
+                return der;
             }
         }
 
         //En cualquier otro caso el pivote será el elemento izquierdo
-        pivote = izq;
-        return pivote;
+        return izq;
     }
 
     public static int[] generarVector(int m) {
@@ -187,7 +145,7 @@ public class QuicksortModificadoMejorado {
             j = p - 1;            // empezamos a comprobar con el anterior
             while ((j >= izq)) { // mientras queden posiciones y el
                                  // valor de aux sea menor que los
-                                 // de la izquierda, se desplaza a
+                                 // de la izquierda, se desplaza a la derecha
                 comparaciones++;
                 if(aux<a[j]) {
                     asignaciones++;
@@ -223,7 +181,6 @@ public class QuicksortModificadoMejorado {
             asignaciones=0;
             comparaciones=0;
 
-
         }
 
         FileWriter fichero = null;
@@ -258,6 +215,7 @@ public class QuicksortModificadoMejorado {
     public static void main(String[] args) {
 
         probarValores();
+
 
         }
 

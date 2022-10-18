@@ -29,17 +29,29 @@ public class QuicksortModificado2 {
         int j = der;         // j realiza la búsqueda de derecha a izquierda
         int aux;
 
-        while (i < j) {                          // mientras no se crucen las búsquedas
-            while (a[i] <= pivote && i < j) i++; // busca elemento mayor que pivote
-            while (a[j] > pivote) j--;           // busca elemento menor que pivote
+        while (i < j) {// mientras no se crucen las búsquedas
+            comparaciones++;
+            while (a[i] <= pivote && i < j){
+                comparaciones++;
+                i++;                           // busca elemento mayor que pivote
+            }
+            comparaciones++;
+            while (a[j] > pivote) {
+                comparaciones++;
+                j--;                          // busca elemento menor que pivote
+            }
             if (i < j) {                        // si no se han cruzado
+                asignaciones++;
                 aux = a[j];                      // los intercambia
+                asignaciones++;
                 a[i] = a[j];
+                asignaciones++;
                 a[j] = aux;
             }
         }
-
+        asignaciones++;
         a[izq] = a[j];      // se coloca el pivote en su lugar de forma que tendremos
+        asignaciones++;
         a[j] = pivote;      // los menores a su izquierda y los mayores a su derecha
 
         if (izq < j - 1)
@@ -56,18 +68,21 @@ public class QuicksortModificado2 {
         if ((der - izq + 1) <= k) {
             insercionDirectaConExtremos(a, izq, der);
         }
+
         //Si el subarray que se inspecciona es de longitud > k
         else {
             int pospivote = elegirPivote(a, izq, der); //Devuelve la posición del pivote
-            int i = izq;         // i realiza la búsqueda de izquierda a derecha
-            int j = der;         // j realiza la búsqueda de derecha a izquierda
+            int i = izq;
+            int j = der;
             int aux;
 
-            while (i < j) {                          // mientras no se crucen las búsquedas
+            while (i < j) {
+                comparaciones ++;
                 while (a[i] <= a[pospivote] && i < j) {
                     i++;
                     comparaciones++;                                 // busca elemento mayor que pivote
                 }
+                comparaciones ++;
                 while (a[j] > a[pospivote]) {
                     j--;
                     comparaciones++;                                 // busca elemento menor que pivote
@@ -109,10 +124,7 @@ public class QuicksortModificado2 {
 
     public static int elegirPivote(int[] a, int izq, int der) {
 
-        int mitad, pivote;
-
-        //Inicializo el pivote como el extremo izquierdo
-        pivote = izq;
+        int mitad;
 
         mitad = (izq + der) / 2;
 
@@ -120,40 +132,28 @@ public class QuicksortModificado2 {
         if (a[izq] <= a[mitad]){
             comparaciones ++;
             if (a[mitad] <= a[der]){
-                pivote = mitad;
-                return pivote;
-            }
-        }
-
-        comparaciones ++;
-        if (a[der] <= a[mitad]){
-            comparaciones ++;
-            if (a[mitad] <= a[izq]) {
-                pivote = mitad;
-                return pivote;
+                return mitad;
             }
         }
 
         comparaciones++;
         //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
-        if ((a[mitad] <= a[der]) && (a[der] <= a[izq])){
+        if (a[mitad] <= a[der]){
             comparaciones++;
             if (a[der] <= a[izq]){
-                pivote = der;
-                return pivote;
+                return der;
             }
         }
-
+        comparaciones++;
         if (a[izq] <= a[der]){
+            comparaciones++;
             if (a[der] <= a[mitad]){
-                pivote = der;
-                return pivote;
+                return der;
             }
         }
 
         //En cualquier otro caso el pivote será el elemento izquierdo
-        pivote = izq;
-        return pivote;
+        return izq;
     }
 
     public static int[] generarVector(int m) {
@@ -185,6 +185,8 @@ public class QuicksortModificado2 {
 
         int x, y;
 
+        System.out.println(Arrays.toString(vector));
+
         for (int i = 0; i < m/10; i++) {
             x = (int) (Math.random() * ((m - 1) + 1));
             y = (int) (Math.random() * ((m - 1) + 1));
@@ -203,110 +205,109 @@ public class QuicksortModificado2 {
         for (p = izq + 1; p <= der; p++) { // desde el segundo elemento hasta
             aux = a[p];           // el final, guardamos el elemento y
             j = p - 1;            // empezamos a comprobar con el anterior
-            comparaciones ++;
-            while ((j >= izq) && (aux < a[j])) { // mientras queden posiciones y el
+            while ((j >= izq)) { // mientras queden posiciones y el
                 // valor de aux sea menor que los
+                // de la izquierda, se desplaza a la derecha
                 comparaciones++;
-                asignaciones++;
-                a[j + 1] = a[j];   // de la izquierda, se desplaza a
-                j--;               // la derecha
-            }
-            if (!(j>=izq)){
-                comparaciones --;
+                if(aux<a[j]) {
+                    asignaciones++;
+                    a[j + 1] = a[j];
+                    j--;
+                }
+                else{
+                    break;
+                }
             }
             asignaciones++;
             a[j + 1] = aux;       // colocamos aux en su sitio
         }
-        //System.out.println("Sale de inserción directa");
     }
 
     public static void probarValores() {
         int[] listaComparaciones = new int[10];
         int[] listaAsignaciones = new int[10];
-        int[] listaTiempos = new int[10];
+        long[] listaTiempos = new long[10];
         int[] a;
+        long tiempo=0;
 
         for (int i = 1; i <= 10; i++) {
 
-            for (int j = 0; j <= 20; j++) {
+            for (int j = 0; j < 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
-                a = generarVectorCasiOrdenado(i*10000);
+                a = generarVector(i*10000);
 
 
                 Instant start = Instant.now();
                 quicksortModificado(a, 0, a.length - 1, 11);
                 Instant finish = Instant.now();
                 long timeElapsed = Duration.between(start,finish).toNanos();
+                tiempo=tiempo+timeElapsed;
 
-                listaAsignaciones[i-1] = listaAsignaciones[i-1] + asignaciones;
-                listaComparaciones[i-1] = listaAsignaciones[i-1] + comparaciones;
-                listaTiempos[i-1] = (int) (listaTiempos[i-1] + timeElapsed);
-                comparaciones = 0;
-                asignaciones = 0;
+
             }
 
             //Se hace un promedio de las 20 ejecuciones de cada k
-            listaAsignaciones[i -1] = listaAsignaciones[i-1] / 20;
-            listaComparaciones[i -1] = listaComparaciones[i-1] / 20;
-            listaTiempos[i -1] = listaTiempos[i-1] / 20;
+            listaAsignaciones[i -1] = asignaciones / 20;
+            listaComparaciones[i -1] = comparaciones / 20;
+            listaTiempos[i -1] = tiempo/ 20;
+            comparaciones = 0;
+            asignaciones = 0;
 
         }
 
-        exportar(listaComparaciones, listaAsignaciones,listaTiempos);
-
-    }
-
-    public static void probarValoresQuicksortNormal() {
-        int[] listaComparaciones = new int[10];
-        int[] listaAsignaciones = new int[10];
-        int[] listaTiempos = new int[10];
-        int[] a;
+        //Nuevas listas para Quicksot original (QO)
+        int[] listaComparacionesQO = new int[10];
+        int[] listaAsignacionesQO = new int[10];
+        long[] listaTiemposQO = new long[10];
+        int[] b;
+        tiempo=0;
 
         for (int i = 1; i <= 10; i++) {
 
-            for (int j = 0; j <= 20; j++) {
+            for (int j = 0; j < 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
-                a = generarVectorCasiOrdenado(i*10000);
-
+                a = generarVector(i*10000);
 
                 Instant start = Instant.now();
-                quicksort(a, 0, a.length-1);
+                quicksortModificado(a, 0, a.length - 1, 11);
                 Instant finish = Instant.now();
                 long timeElapsed = Duration.between(start,finish).toNanos();
+                tiempo=tiempo+timeElapsed;
 
-                listaAsignaciones[i-1] = listaAsignaciones[i-1] + asignaciones;
-                listaComparaciones[i-1] = listaAsignaciones[i-1] + comparaciones;
-                listaTiempos[i-1] = (int) (listaTiempos[i-1] + timeElapsed);
-                comparaciones = 0;
-                asignaciones = 0;
+
             }
 
             //Se hace un promedio de las 20 ejecuciones de cada k
-            listaAsignaciones[i -1] = listaAsignaciones[i-1] / 20;
-            listaComparaciones[i -1] = listaComparaciones[i-1] / 20;
-            listaTiempos[i -1] = listaTiempos[i-1] / 20;
+            listaAsignacionesQO[i -1] = asignaciones / 20;
+            listaComparacionesQO[i -1] = comparaciones / 20;
+            listaTiemposQO[i -1] = tiempo/ 20;
+            comparaciones = 0;
+            asignaciones = 0;
 
         }
 
-        exportar(listaComparaciones, listaAsignaciones,listaTiempos);
-
-    }
-    public static void exportar(int[] comparaciones, int[] asignaciones, int[] tiempos){
         FileWriter fichero = null;
         PrintWriter pw;
 
         try {
-            fichero = new FileWriter("datos2.csv",true);
+            fichero = new FileWriter("datos2.csv");
             pw = new PrintWriter(fichero);
 
             pw.println("Tamaño;Comparaciones;Asignaciones;Tiempos");
 
             //Imprime los valores de las asignaciones y las comparaciones
             for (int i=0;i<10;i++){
-                pw.println((i+1)*10000+";"+comparaciones[i]+";"+ asignaciones[i]+";"+tiempos[i]);
+                pw.println((i+1)*10000+";"+listaComparaciones[i]+";"+ listaAsignaciones[i]+";"+listaTiempos[i]);
             }
 
-            pw.println("\n\n");
+            pw.println("\n\n\n");
+
+            pw.println("Tamaño;Comparaciones;Asignaciones;Tiempos");
+
+            //Imprime los valores de las asignaciones y las comparaciones
+            for (int i=0;i<10;i++){
+                pw.println((i+1)*10000+";"+listaComparacionesQO[i]+";"+ listaAsignacionesQO[i]+";"+listaTiemposQO[i]);
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -319,13 +320,13 @@ public class QuicksortModificado2 {
                 e2.printStackTrace();
             }
         }
+
     }
 
 
     public static void main(String[] args) {
 
         probarValores();
-        probarValoresQuicksortNormal();
         
     }
 
