@@ -55,18 +55,21 @@ public class QuicksortModificado {
         if ((der - izq + 1) <= k) {
             insercionDirectaConExtremos(a, izq, der);
         }
+
         //Si el subarray que se inspecciona es de longitud > k
         else {
             int pospivote = elegirPivote(a, izq, der); //Devuelve la posición del pivote
-            int i = izq;         // i realiza la búsqueda de izquierda a derecha
-            int j = der;         // j realiza la búsqueda de derecha a izquierda
+            int i = izq;
+            int j = der;
             int aux;
 
-            while (i < j) {                          // mientras no se crucen las búsquedas
+            while (i < j) {
+                comparaciones ++;
                 while (a[i] <= a[pospivote] && i < j) {
                     i++;
                     comparaciones++;                                 // busca elemento mayor que pivote
                 }
+                comparaciones ++;
                 while (a[j] > a[pospivote]) {
                     j--;
                     comparaciones++;                                 // busca elemento menor que pivote
