@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class QuicksortModificado {
+public class Parte1 {
     static int comparaciones;
     static int asignaciones;
 
@@ -20,32 +20,6 @@ public class QuicksortModificado {
     /*
     Algoritmo de Quicksort base que funciona
      */
-    public static void quicksort(int[] a, int izq, int der) {
-
-        int pivote = a[izq]; // tomamos primer elemento como pivote
-        int i = izq;         // i realiza la búsqueda de izquierda a derecha
-        int j = der;         // j realiza la búsqueda de derecha a izquierda
-        int aux;
-
-        while (i < j) {                          // mientras no se crucen las búsquedas
-            while (a[i] <= pivote && i < j) i++; // busca elemento mayor que pivote
-            while (a[j] > pivote) j--;           // busca elemento menor que pivote
-            if (i < j) {                        // si no se han cruzado
-                aux = a[j];                      // los intercambia
-                a[i] = a[j];
-                a[j] = aux;
-            }
-        }
-
-        a[izq] = a[j];      // se coloca el pivote en su lugar de forma que tendremos
-        a[j] = pivote;      // los menores a su izquierda y los mayores a su derecha
-
-        if (izq < j - 1)
-            quicksort(a, izq, j - 1);          // ordenamos subarray izquierdo
-        if (j + 1 < der)
-            quicksort(a, j + 1, der);          // ordenamos subarray derecho
-
-    }
 
     public static void quicksortModificado(int[] a, int izq, int der, int k) {
 
@@ -54,18 +28,21 @@ public class QuicksortModificado {
         if ((der - izq + 1) <= k) {
             insercionDirectaConExtremos(a, izq, der);
         }
+
         //Si el subarray que se inspecciona es de longitud > k
         else {
             int pospivote = elegirPivote(a, izq, der); //Devuelve la posición del pivote
-            int i = izq;         // i realiza la búsqueda de izquierda a derecha
-            int j = der;         // j realiza la búsqueda de derecha a izquierda
+            int i = izq;
+            int j = der;
             int aux;
 
-            while (i < j) {                          // mientras no se crucen las búsquedas
+            while (i < j) {
+                comparaciones ++;
                 while (a[i] <= a[pospivote] && i < j) {
                     i++;
                     comparaciones++;                                 // busca elemento mayor que pivote
                 }
+                comparaciones ++;
                 while (a[j] > a[pospivote]) {
                     j--;
                     comparaciones++;                                 // busca elemento menor que pivote
@@ -107,32 +84,36 @@ public class QuicksortModificado {
 
     public static int elegirPivote(int[] a, int izq, int der) {
 
-        int mitad, pivote;
-
-        //Inicializo el pivote como el extremo izquierdo
-        pivote = izq;
+        int mitad;
 
         mitad = (izq + der) / 2;
 
-        //extremoIzquierdo <= elementoCentral <= extremoDerecho o extremoDerecho <= elementoCentral <= extremoIzquierdo
-        if ((a[izq] <= a[mitad]) && (a[mitad] <= a[der]) || (a[der] <= a[mitad]) && (a[mitad] <= a[izq])){
-            comparaciones = comparaciones + 4;
-            pivote = mitad;
+        comparaciones ++;
+        if (a[izq] <= a[mitad]){
+            comparaciones ++;
+            if (a[mitad] <= a[der]){
+                return mitad;
+            }
         }
 
+        comparaciones++;
         //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
-        if ((a[mitad] <= a[der]) && (a[der] <= a[izq]) || (a[izq] <= a[der]) && (a[der] <= a[mitad])){
-            comparaciones = comparaciones + 4;
-            pivote = der;
+        if (a[mitad] <= a[der]){
+            comparaciones++;
+            if (a[der] <= a[izq]){
+                return der;
+            }
+        }
+        comparaciones++;
+        if (a[izq] <= a[der]){
+            comparaciones++;
+            if (a[der] <= a[mitad]){
+                return der;
+            }
         }
 
-        //extremoDerecho <= extremoIzquierdo <= elementoCentral o elementoMitad <= extremoIzquierdo <= extremoDerecho
-        if ((a[der] <= a[izq]) && (a[izq] <= a[mitad]) || (a[mitad] <= a[izq]) && (a[izq] <= a[der])){
-            comparaciones = comparaciones + 4;
-            pivote = izq;
-        }
-
-        return pivote;
+        //En cualquier otro caso el pivote será el elemento izquierdo
+        return izq;
     }
 
     public static int[] generarVector(int m) {
@@ -154,24 +135,6 @@ public class QuicksortModificado {
         return vector;
     }
 
-    public static int[] generarVectorCasiOrdenado(int m){
-
-        int[] vector = new int[m];
-
-        for (int i = 0; i < m; i++) {
-            vector[i] = i + 1;
-        }
-
-        int x, y;
-
-        for (int i = 0; i < m/10; i++) {
-            x = (int) (Math.random() * ((m - 1) + 1));
-            y = (int) (Math.random() * ((m - 1) + 1));
-            swap(vector, x, y);
-        }
-
-        return vector;
-    }
 
 
     public static void insercionDirectaConExtremos(int[] a, int izq, int der) {
@@ -180,17 +143,22 @@ public class QuicksortModificado {
         for (p = izq + 1; p <= der; p++) { // desde el segundo elemento hasta
             aux = a[p];           // el final, guardamos el elemento y
             j = p - 1;            // empezamos a comprobar con el anterior
-            while ((j >= izq) && (aux < a[j])) { // mientras queden posiciones y el
-                // valor de aux sea menor que los
+            while ((j >= izq)) { // mientras queden posiciones y el
+                                 // valor de aux sea menor que los
+                                 // de la izquierda, se desplaza a la derecha
                 comparaciones++;
-                asignaciones++;
-                a[j + 1] = a[j];   // de la izquierda, se desplaza a
-                j--;               // la derecha
+                if(aux<a[j]) {
+                    asignaciones++;
+                    a[j + 1] = a[j];
+                    j--;
+                }
+                else{
+                    break;
+                }
             }
             asignaciones++;
             a[j + 1] = aux;       // colocamos aux en su sitio
         }
-        //System.out.println("Sale de inserción directa");
     }
 
     public static void probarValores() {
@@ -199,26 +167,19 @@ public class QuicksortModificado {
         int[] a;
 
         for (int i = 3; i <= 30; i++) {
-            listaAsignaciones[i - 3] = 0;
-            listaComparaciones[i - 3] = 0;
 
-            for (int j = 0; j <= 20; j++) {
+            for (int j = 0; j < 20; j++) {
                 //Para cada ejecución para una k fija se reinician los contadores y se prueba con un vector distinto
-                a = generarVectorCasiOrdenado(100000);
-
-
+                a = generarVector(100000);
                 quicksortModificado(a, 0, a.length - 1, i);
-                listaAsignaciones[i - 3] = listaAsignaciones[i - 3] + asignaciones;
-                listaComparaciones[i - 3] = listaAsignaciones[i - 3] + comparaciones;
 
-                comparaciones = 0;
-                asignaciones = 0;
             }
 
             //Se hace un promedio de las 20 ejecuciones de cada k
-            listaAsignaciones[i - 3] = listaAsignaciones[i - 3] / 20;
-            listaComparaciones[i - 3] = listaComparaciones[i - 3] / 20;
-
+            listaAsignaciones[i - 3] = asignaciones / 20;
+            listaComparaciones[i - 3] = comparaciones / 20;
+            asignaciones=0;
+            comparaciones=0;
 
         }
 
@@ -255,6 +216,10 @@ public class QuicksortModificado {
 
         probarValores();
 
-    }
+
+        }
+
+
+
 
 }

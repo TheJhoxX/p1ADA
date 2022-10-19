@@ -9,9 +9,9 @@ import java.time.Duration;
 import java.time.Instant;
 
 
-public class QuicksortModificado2 {
-    static int comparaciones;
-    static int asignaciones;
+public class Parte2 {
+    static long comparaciones;
+    static long asignaciones;
     public static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
@@ -21,7 +21,7 @@ public class QuicksortModificado2 {
     /*
     Algoritmo de Quicksort base que funciona
      */
-    public static void quicksort(int[] a, int izq, int der) {
+    public static void quicksort(int a[], int izq, int der) {
 
         int pivote = a[izq]; // tomamos primer elemento como pivote
         int i = izq;         // i realiza la búsqueda de izquierda a derecha
@@ -41,7 +41,7 @@ public class QuicksortModificado2 {
             }
             if (i < j) {                        // si no se han cruzado
                 asignaciones++;
-                aux = a[j];                      // los intercambia
+                aux = a[i];                      // los intercambia
                 asignaciones++;
                 a[i] = a[j];
                 asignaciones++;
@@ -135,6 +135,15 @@ public class QuicksortModificado2 {
             }
         }
 
+        comparaciones ++;
+        if (a[der] <= a[mitad]){
+            comparaciones ++;
+            if (a[mitad] <= a[izq]){
+                return mitad;
+            }
+        }
+
+
         comparaciones++;
         //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
         if (a[mitad] <= a[der]){
@@ -155,24 +164,6 @@ public class QuicksortModificado2 {
         return izq;
     }
 
-    public static int[] generarVector(int m) {
-
-        int[] vector = new int[m];
-
-        for (int i = 0; i < m; i++) {
-            vector[i] = i + 1;
-        }
-
-        int x, y;
-
-        for (int i = 0; i < m; i++) {
-            x = (int) (Math.random() * ((m - 1) + 1));    /*No poner +1 para no exceder capacidad del array*/
-            y = (int) (Math.random() * ((m - 1) + 1));
-            swap(vector, x, y);
-        }
-
-        return vector;
-    }
 
     public static int[] generarVectorCasiOrdenado(int m){
 
@@ -222,8 +213,8 @@ public class QuicksortModificado2 {
     }
 
     public static void probarValores() {
-        int[] listaComparaciones = new int[10];
-        int[] listaAsignaciones = new int[10];
+        long[] listaComparaciones = new long[10];
+        long[] listaAsignaciones = new long[10];
         long[] listaTiempos = new long[10];
         int[] a;
         long tiempo=0;
@@ -250,12 +241,13 @@ public class QuicksortModificado2 {
             listaTiempos[i -1] = tiempo/ 20;
             comparaciones = 0;
             asignaciones = 0;
+            tiempo=0;
 
         }
 
         //Nuevas listas para Quicksot original (QO)
-        int[] listaComparacionesQO = new int[10];
-        int[] listaAsignacionesQO = new int[10];
+        long[] listaComparacionesQO = new long[10];
+        long[] listaAsignacionesQO = new long[10];
         long[] listaTiemposQO = new long[10];
         tiempo=0;
 
@@ -280,6 +272,7 @@ public class QuicksortModificado2 {
             listaTiemposQO[i -1] = tiempo/ 20;
             comparaciones = 0;
             asignaciones = 0;
+            tiempo=0;
 
         }
 
@@ -290,7 +283,7 @@ public class QuicksortModificado2 {
             fichero = new FileWriter("datos2.csv");
             pw = new PrintWriter(fichero);
 
-            pw.println("Tamaño;Comparaciones;Asignaciones;Tiempos");
+            pw.println("Tamano;Comparaciones;Asignaciones;Tiempos");
 
             //Imprime los valores de las asignaciones y las comparaciones
             for (int i=0;i<10;i++){
@@ -299,7 +292,7 @@ public class QuicksortModificado2 {
 
             pw.println("\n\n\n");
 
-            pw.println("Tamaño;Comparaciones;Asignaciones;Tiempos");
+            pw.println("Tamano;Comparaciones;Asignaciones;Tiempos");
 
             //Imprime los valores de las asignaciones y las comparaciones
             for (int i=0;i<10;i++){
@@ -324,6 +317,9 @@ public class QuicksortModificado2 {
     public static void main(String[] args) {
 
         probarValores();
+
+
+
         
     }
 
