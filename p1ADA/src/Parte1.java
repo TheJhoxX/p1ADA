@@ -1,4 +1,4 @@
-/*Algoritmo modificado de QuickSort
+/*Parte 1
  * Pablo Gutiérrez Martínez
  * Víctor Jorge Sibaja*/
 
@@ -18,9 +18,12 @@ public class Parte1 {
     }
 
     /*
-    Algoritmo de Quicksort base que funciona
+    Algoritmo de Quicksort sin modificaciones
      */
 
+    /*
+    Modificación del algoritmo Quicksort
+     */
     public static void quicksortModificado(int[] a, int izq, int der, int k) {
 
         //En caso de que el subarray que se pasa como parámetro a la llamada sea de longitud <= 3
@@ -65,9 +68,9 @@ public class Parte1 {
             asignaciones++;
             int valorPivote = a[pospivote];
             asignaciones++;
-            a[pospivote] = a[j];      // se coloca el pivote en su lugar de forma que tendremos
+            a[pospivote] = a[j];      // se coloca el pivote en su lugar
             asignaciones++;
-            a[j] = valorPivote;      // los menores a su izquierda y los mayores a su derecha
+            a[j] = valorPivote;
 
 
             if (izq < j - 1) {
@@ -82,6 +85,9 @@ public class Parte1 {
 
     }
 
+    /*
+    Funcion que devuelve la posición de un pivote
+     */
     public static int elegirPivote(int[] a, int izq, int der) {
 
         int mitad;
@@ -97,7 +103,6 @@ public class Parte1 {
         }
 
         comparaciones++;
-        //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
         if (a[mitad] <= a[der]){
             comparaciones++;
             if (a[der] <= a[izq]){
@@ -112,10 +117,12 @@ public class Parte1 {
             }
         }
 
-        //En cualquier otro caso el pivote será el elemento izquierdo
         return izq;
     }
 
+    /*
+    Funcion que retorna vector desordenado
+     */
     public static int[] generarVector(int m) {
 
         int[] vector = new int[m];
@@ -127,7 +134,7 @@ public class Parte1 {
         int x, y;
 
         for (int i = 0; i < m; i++) {
-            x = (int) (Math.random() * ((m - 1) + 1));    /*No poner +1 para no exceder capacidad del array*/
+            x = (int) (Math.random() * ((m - 1) + 1));
             y = (int) (Math.random() * ((m - 1) + 1));
             swap(vector, x, y);
         }
@@ -135,17 +142,16 @@ public class Parte1 {
         return vector;
     }
 
-
-
+    /*
+    Algoritmo de insercionDirecta modificado para funcionar con extremos
+     */
     public static void insercionDirectaConExtremos(int[] a, int izq, int der) {
         int p, j;
         int aux;
-        for (p = izq + 1; p <= der; p++) { // desde el segundo elemento hasta
-            aux = a[p];           // el final, guardamos el elemento y
-            j = p - 1;            // empezamos a comprobar con el anterior
-            while ((j >= izq)) { // mientras queden posiciones y el
-                                 // valor de aux sea menor que los
-                                 // de la izquierda, se desplaza a la derecha
+        for (p = izq + 1; p <= der; p++) {
+            aux = a[p];
+            j = p - 1;
+            while ((j >= izq)) {
                 comparaciones++;
                 if(aux<a[j]) {
                     asignaciones++;
@@ -157,10 +163,13 @@ public class Parte1 {
                 }
             }
             asignaciones++;
-            a[j + 1] = aux;       // colocamos aux en su sitio
+            a[j + 1] = aux;
         }
     }
 
+    /*
+    Metodo encargado de las ejecuciones de los algoritmos y la exportación de datos
+     */
     public static void probarValores() {
         int[] listaComparaciones = new int[28];
         int[] listaAsignaciones = new int[28];

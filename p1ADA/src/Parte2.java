@@ -1,4 +1,4 @@
-/*Algoritmo modificado de QuickSort
+/*Parte 2
  * Pablo Gutiérrez Martínez
  * Víctor Jorge Sibaja*/
 
@@ -60,6 +60,9 @@ public class Parte2 {
 
     }
 
+    /*
+    Modificación del algoritmo Quicksort
+     */
     public static void quicksortModificado(int[] a, int izq, int der, int k) {
 
         //En caso de que el subarray que se pasa como parámetro a la llamada sea de longitud <= 3
@@ -121,6 +124,9 @@ public class Parte2 {
 
     }
 
+    /*
+    Funcion que retorna la posición del pivote
+     */
     public static int elegirPivote(int[] a, int izq, int der) {
 
         int mitad;
@@ -165,6 +171,9 @@ public class Parte2 {
     }
 
 
+    /*
+    Funcion que retorna vector casi ordenado
+     */
     public static int[] generarVectorCasiOrdenado(int m){
 
         int[] vector = new int[m];
@@ -188,15 +197,17 @@ public class Parte2 {
     }
 
 
+    /*
+    Algoritmo de insercionDirecta modificado para funcionar con extremos
+     */
     public static void insercionDirectaConExtremos(int[] a, int izq, int der) {
         int p, j;
         int aux;
-        for (p = izq + 1; p <= der; p++) { // desde el segundo elemento hasta
-            aux = a[p];           // el final, guardamos el elemento y
-            j = p - 1;            // empezamos a comprobar con el anterior
-            while ((j >= izq)) { // mientras queden posiciones y el
-                // valor de aux sea menor que los
-                // de la izquierda, se desplaza a la derecha
+        for (p = izq + 1; p <= der; p++) {
+            aux = a[p];
+            j = p - 1;
+            while ((j >= izq)) {
+
                 comparaciones++;
                 if(aux<a[j]) {
                     asignaciones++;
@@ -208,10 +219,13 @@ public class Parte2 {
                 }
             }
             asignaciones++;
-            a[j + 1] = aux;       // colocamos aux en su sitio
+            a[j + 1] = aux;
         }
     }
 
+    /*
+    Metodo encargado de las ejecuciones de los algoritmos y la exportación de datos
+     */
     public static void probarValores() {
         long[] listaComparaciones = new long[10];
         long[] listaAsignaciones = new long[10];
@@ -227,7 +241,7 @@ public class Parte2 {
 
 
                 Instant start = Instant.now();
-                quicksortModificado(a, 0, a.length - 1, 11);
+                quicksortModificado(a, 0, a.length - 1, 14);
                 Instant finish = Instant.now();
                 long timeElapsed = Duration.between(start,finish).toNanos();
                 tiempo=tiempo+timeElapsed;
@@ -276,6 +290,7 @@ public class Parte2 {
 
         }
 
+        //Exportar datos QM y QO
         FileWriter fichero = null;
         PrintWriter pw;
 
@@ -283,7 +298,8 @@ public class Parte2 {
             fichero = new FileWriter("datos2.csv");
             pw = new PrintWriter(fichero);
 
-            pw.println("Tamano;Comparaciones;Asignaciones;Tiempos");
+            //Quicksort modificado
+            pw.println("n;ComparacionesQM;AsignacionesQM;TiemposQM");
 
             //Imprime los valores de las asignaciones y las comparaciones
             for (int i=0;i<10;i++){
@@ -292,7 +308,8 @@ public class Parte2 {
 
             pw.println("\n\n\n");
 
-            pw.println("Tamano;Comparaciones;Asignaciones;Tiempos");
+            //Quicksort original
+            pw.println("n;ComparacionesQO;AsignacionesQO;TiemposQO");
 
             //Imprime los valores de las asignaciones y las comparaciones
             for (int i=0;i<10;i++){
