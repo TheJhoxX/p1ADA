@@ -86,7 +86,7 @@ public class Parte1 {
     }
 
     /*
-    Funcion que devuelve la posición de un pivote
+    Funcion que retorna la posición del pivote
      */
     public static int elegirPivote(int[] a, int izq, int der) {
 
@@ -102,7 +102,17 @@ public class Parte1 {
             }
         }
 
+        comparaciones ++;
+        if (a[der] <= a[mitad]){
+            comparaciones ++;
+            if (a[mitad] <= a[izq]){
+                return mitad;
+            }
+        }
+
+
         comparaciones++;
+        //elementoCentral <= extremoDerecho <= extremoIzquierdo o extremoIzquierdo <= extremoDerecho <= elementoCentral
         if (a[mitad] <= a[der]){
             comparaciones++;
             if (a[der] <= a[izq]){
@@ -117,6 +127,7 @@ public class Parte1 {
             }
         }
 
+        //En cualquier otro caso el pivote será el elemento izquierdo
         return izq;
     }
 
