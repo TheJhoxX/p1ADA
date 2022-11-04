@@ -333,8 +333,9 @@ public class Parte2 {
 
     public static void main(String[] args) {
 
-        probarValores();
-
+        //probarValores();
+        int a[] = generarVectorCasiOrdenado()
+        int b[] = generarVectorCasiOrdenado();
 
 
         
